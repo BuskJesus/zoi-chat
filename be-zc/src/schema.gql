@@ -1,0 +1,79 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Conversation {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  participants: [User!]!
+  messages: [Message!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Message {
+  id: ID!
+  content: String!
+  senderId: String!
+  receiverId: String!
+  conversationId: String!
+  read: Boolean!
+  readAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  sender: User!
+  receiver: User!
+  conversation: Conversation!
+}
+
+type User {
+  id: ID!
+  email: String!
+  username: String!
+  messages: [Message!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type AuthResponse {
+  accessToken: String!
+  user: User!
+}
+
+type Query {
+  users: [User!]!
+  user(id: ID!): User
+  conversations: [Conversation!]!
+  conversation(otherUserId: String!): Conversation!
+}
+
+type Mutation {
+  login(input: LoginInput!): AuthResponse!
+  signUp(input: SignupInput!): AuthResponse!
+  sendMessage(input: CreateMessageInput!): Message!
+  markAsRead(messageId: String!): Message!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input SignupInput {
+  email: String!
+  username: String!
+  password: String!
+}
+
+input CreateMessageInput {
+  content: String!
+  receiverId: String!
+}
+
+type Subscription {
+  newMessage: Message!
+}
